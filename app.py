@@ -15,6 +15,8 @@
 # def home():
 #     return redirect(url_for('register'))
 
+
+
 # @app.route('/register', methods=['GET', 'POST'])
 # def register():
 #     if request.method == 'POST':
