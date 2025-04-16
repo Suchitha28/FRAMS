@@ -457,7 +457,7 @@
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"> -->
 
     <!-- Font Awesome (for icons) -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"> -->
 
     <!-- Custom Styles
     <style>
@@ -638,7 +638,11 @@
     <!-- Sidebar -->
     <div class="bg-dark text-white p-3 vh-100 sidebar">
         <h4 class="text-center">Laantek Solutions</h4>
+        <div class="text-center">
+            <img src="https://content.jdmagicbox.com/v2/comp/bangalore/d4/080pxx80.xx80.221109215153.c6d4/catalogue/laantek-solutions-pvt-ltd-bangalore-human-resource-consultants-bc8q6j80r3.jpg" alt="Company Logo" width="100" height="100">
+        </div>
         <h1>Welcome, {{ adminName }}! </h1>
+
         <ul class="nav flex-column">
             <!-- <button class="btn btn-primary custom-btn" ng-click="goToPage('dashboard.html')">Go to Dashboard</button>
             <button class="btn btn-success custom-btn" ng-click="goToPage('register-employee.html')">Register Employee</button>
@@ -683,14 +687,14 @@
         </div>
 
         <!-- Carousel -->
-        <div id="photoCarousel" class="carousel slide carousel-container" data-bs-ride="carousel">
+        <!-- <div id="photoCarousel" class="carousel slide carousel-container" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <img src="https://kinsta.com/wp-content/uploads/2020/08/tiger-jpg.jpg" class="d-block w-100" alt="Photo 1">
 
                 </div>
                 <div class="carousel-item">
-                    <img src="https://onlinejpgtools.com/images/your-image.jpg" class="d-block w-100" alt="Photo 2">
+                    <img src="https://onlinejpgtools.com/images/examples-onlinejpgtools/sunflower.jpg" class="d-block w-100" alt="Photo 2">
 
 
                 </div>
@@ -703,10 +707,29 @@
             </button>
         </div>
     </div>
+</div> -->
+<div id="photoCarousel" class="carousel slide carousel-container" data-bs-ride="carousel" data-bs-interval="2000" data-bs-wrap="true">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="https://kinsta.com/wp-content/uploads/2020/08/tiger-jpg.jpg" class="d-block w-100" alt="Photo 1">
+        </div>
+        <div class="carousel-item">
+            <img src="https://onlinejpgtools.com/images/examples-onlinejpgtools/sunflower.jpg" class="d-block w-100" alt="Photo 2">
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#photoCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#photoCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    </button>
 </div>
 
+
 <!-- Bootstrap Bundle -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 
 <!-- AngularJS Controller -->
 <script>

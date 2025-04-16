@@ -1098,35 +1098,202 @@
 
 
 # ............... code 9......................
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+# from flask import Flask, render_template, request, redirect, url_for, jsonify
+# from werkzeug.utils import secure_filename
+# import os
+# import datetime
+# import mysql.connector
+
+# app = Flask(__name__)
+
+# # MySQL database config
+# DB_CONFIG = {
+#     "host": "localhost",
+#     "user": "test",  # your MySQL username
+#     "password": "Test@1234",  # your MySQL password
+#     "database": "attendance_db"  # your database name
+# }
+
+# # # Upload folders
+# # UPLOAD_FOLDER_PROFILE = 'static/profile_pics'
+# # UPLOAD_FOLDER_DATASET = 'static/dataset'
+# # UPLOAD_FOLDER_UPLOADS = 'static/uploads'
+
+# # # Ensure folders exist
+# # os.makedirs(UPLOAD_FOLDER_PROFILE, exist_ok=True)
+# # os.makedirs(UPLOAD_FOLDER_DATASET, exist_ok=True)
+# # os.makedirs(UPLOAD_FOLDER_UPLOADS, exist_ok=True)
+
+# attendance_records = []
+
+# # Function to get DB connection
+# def get_db_connection():
+#     try:
+#         conn = mysql.connector.connect(**DB_CONFIG)
+#         return conn
+#     except mysql.connector.Error as err:
+#         print(f"Database connection failed: {err}")
+#         raise
+
+# # Routes
+# @app.route('/')
+# def index():
+#     return render_template('login.html')
+
+# @app.route('/home')
+# def home():
+#     return render_template('home.html')
+
+# @app.route('/register')
+# def register():
+#     return render_template('register.html')
+
+# @app.route('/admin_r')
+# def admin_r():
+#     return render_template('admin_r.html')
+
+# @app.route('/dashboard')
+# def dashboard():
+#     user = "Admin"
+#     return render_template('dashboard.html', user=user)
+
+# @app.route('/employee')
+# def employee():
+#     return render_template('employee.html')
+
+# @app.route('/login', methods=['POST'])
+# def login():
+#     username = request.form.get('username')
+#     password = request.form.get('password')
+#     if username == "admin" and password == "admin":
+#         return redirect(url_for('home'))
+#     return "Invalid credentials", 401
+
+# # ✅ Save new employee
+
+# @app.route('/save_employee', methods=['POST'])
+# def save_employee():
+#     emp_id = request.form.get('emp_id')
+#     name = request.form.get('name')
+#     email = request.form.get('email')
+#     phone = request.form.get('phone')
+#     photo = request.files.get('photo')
+
+#     if not emp_id or not name or not email or not phone or not photo:
+#         return jsonify({'error': 'Missing fields'}), 400
+
+#     # # Save the uploaded photo
+#     # photo_filename = secure_filename(emp_id + '_' + photo.filename)
+#     # photo_path = os.path.join(UPLOAD_FOLDER_UPLOADS, photo_filename)
+#     # photo.save(photo_path)
+
+#     try:
+#         conn = get_db_connection()
+#         cursor = conn.cursor()
+
+#         insert_query = """
+#             INSERT INTO employees (emp_id, name, email, phone, photo)
+#             VALUES (%s, %s, %s, %s, %s)
+#         """
+#         cursor.execute(insert_query, (emp_id, name, email, phone, photo))
+#         conn.commit()
+
+#         return jsonify({'message': 'Employee saved successfully'}), 200
+
+#     except mysql.connector.Error as err:
+#         print(f"Database Error: {err}")
+#         return jsonify({'error': 'Database error'}), 500
+
+#     finally:
+#         if cursor:
+#             cursor.close()
+#         if conn:
+#             conn.close()
+
+# # # ✅ Save captured image to dataset
+# # @app.route('/save_image', methods=['POST'])
+# # def save_image():
+# #     emp_id = request.form.get('emp_id')
+# #     image = request.files.get('image')
+
+# #     if not emp_id or not image:
+# #         return "Missing data", 400
+
+# #     timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S%f")
+# #     filename = f"{emp_id}_{timestamp}.jpg"
+# #     save_path = os.path.join(UPLOAD_FOLDER_DATASET, filename)
+# #     image.save(save_path)
+
+# #     return "Image Saved", 200
+
+# # ✅ API to get all employees
+# @app.route('/api/employees')
+# def api_employees():
+#     try:
+#         conn = get_db_connection()
+#         cursor = conn.cursor(dictionary=True)
+#         cursor.execute("SELECT emp_id AS userid, name AS username, photo FROM employees")
+#         employees = cursor.fetchall()
+#         return jsonify(employees)
+#     except mysql.connector.Error as err:
+#         print(f"Error: {err}")
+#         return jsonify([])
+#     finally:
+#         if cursor:
+#             cursor.close()
+#         if conn:
+#             conn.close()
+
+# # ✅ API to get one employee + attendance
+# @app.route('/api/employee/<userid>')
+# def api_employee(userid):
+#     try:
+#         conn = get_db_connection()
+#         cursor = conn.cursor(dictionary=True)
+#         cursor.execute("SELECT emp_id AS userid, name AS username, photo FROM employees WHERE emp_id = %s", (userid,))
+#         employee = cursor.fetchone()
+
+#         if employee:
+#             attendance = [att for att in attendance_records if att['userid'] == userid]
+#             return jsonify({'employee': employee, 'attendance': attendance})
+#         else:
+#             return jsonify({'error': 'Employee not found'}), 404
+
+#     except mysql.connector.Error as err:
+#         print(f"Error: {err}")
+#         return jsonify({'error': 'Database error'}), 500
+
+#     finally:
+#         if cursor:
+#             cursor.close()
+#         if conn:
+#             conn.close()
+
+# if __name__ == '__main__':
+#     app.run(debug=True)
+
+
+# ...............code 10..............
+from flask import Flask, render_template, request, redirect, url_for, jsonify, flash
 from werkzeug.utils import secure_filename
 import os
 import datetime
 import mysql.connector
 
 app = Flask(__name__)
+app.secret_key = 'abhi123'
 
-# MySQL database config
 DB_CONFIG = {
-    "host": "localhost",
-    "user": "test",  # your MySQL username
-    "password": "Test@1234",  # your MySQL password
-    "database": "attendance_db"  # your database name
+    "host": "192.168.0.113",
+    "user": "user",
+    "password": "Test@6789",
+    "database": "attendance_db"
 }
 
-# # Upload folders
-# UPLOAD_FOLDER_PROFILE = 'static/profile_pics'
-# UPLOAD_FOLDER_DATASET = 'static/dataset'
-# UPLOAD_FOLDER_UPLOADS = 'static/uploads'
-
-# # Ensure folders exist
-# os.makedirs(UPLOAD_FOLDER_PROFILE, exist_ok=True)
-# os.makedirs(UPLOAD_FOLDER_DATASET, exist_ok=True)
-# os.makedirs(UPLOAD_FOLDER_UPLOADS, exist_ok=True)
-
+UPLOAD_FOLDER = 'static/uploads'
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 attendance_records = []
 
-# Function to get DB connection
 def get_db_connection():
     try:
         conn = mysql.connector.connect(**DB_CONFIG)
@@ -1135,7 +1302,6 @@ def get_db_connection():
         print(f"Database connection failed: {err}")
         raise
 
-# Routes
 @app.route('/')
 def index():
     return render_template('login.html')
@@ -1169,7 +1335,11 @@ def login():
         return redirect(url_for('home'))
     return "Invalid credentials", 401
 
-# ✅ Save new employee
+@app.route('/submit', methods=['POST'])
+def submit():
+    data = request.get_json()
+    print(data)
+    return jsonify({'message': 'Data received successfully'})
 
 @app.route('/save_employee', methods=['POST'])
 def save_employee():
@@ -1180,29 +1350,41 @@ def save_employee():
     photo = request.files.get('photo')
 
     if not emp_id or not name or not email or not phone or not photo:
-        return jsonify({'error': 'Missing fields'}), 400
+        flash("All fields are required!", "danger")
+        return redirect(url_for('register'))
 
-    # # Save the uploaded photo
-    # photo_filename = secure_filename(emp_id + '_' + photo.filename)
-    # photo_path = os.path.join(UPLOAD_FOLDER_UPLOADS, photo_filename)
-    # photo.save(photo_path)
+    photo_filename = secure_filename(emp_id + '_' + photo.filename)
+    photo_path = os.path.join(UPLOAD_FOLDER, photo_filename)
+    photo.save(photo_path)
 
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
+        print("Inserting employee:", emp_id, name, email, phone, photo_path)
 
-        insert_query = """
+        # Insert into employees table
+        insert_employee = """
             INSERT INTO employees (emp_id, name, email, phone, photo)
             VALUES (%s, %s, %s, %s, %s)
         """
-        cursor.execute(insert_query, (emp_id, name, email, phone, photo))
+        cursor.execute(insert_employee, (emp_id, name, email, phone, photo_path))
+
+        # Insert into status table with default 'ACTIVE'
+        insert_status = """
+            INSERT INTO status (emp_id, name, active_status)
+            VALUES (%s, %s, %s)
+        """
+        cursor.execute(insert_status, (emp_id, name, 'active'))
+
         conn.commit()
 
-        return jsonify({'message': 'Employee saved successfully'}), 200
+        flash("✅ Employee saved successfully!", "success")
+        return redirect(url_for('home'))
 
     except mysql.connector.Error as err:
-        print(f"Database Error: {err}")
-        return jsonify({'error': 'Database error'}), 500
+        print(f"❌ Database Error: {err}")
+        flash(f"❌ Error saving employee data: {err}", "danger")
+        return redirect(url_for('register'))
 
     finally:
         if cursor:
@@ -1210,23 +1392,7 @@ def save_employee():
         if conn:
             conn.close()
 
-# # ✅ Save captured image to dataset
-# @app.route('/save_image', methods=['POST'])
-# def save_image():
-#     emp_id = request.form.get('emp_id')
-#     image = request.files.get('image')
 
-#     if not emp_id or not image:
-#         return "Missing data", 400
-
-#     timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S%f")
-#     filename = f"{emp_id}_{timestamp}.jpg"
-#     save_path = os.path.join(UPLOAD_FOLDER_DATASET, filename)
-#     image.save(save_path)
-
-#     return "Image Saved", 200
-
-# ✅ API to get all employees
 @app.route('/api/employees')
 def api_employees():
     try:
@@ -1237,14 +1403,13 @@ def api_employees():
         return jsonify(employees)
     except mysql.connector.Error as err:
         print(f"Error: {err}")
-        return jsonify([])
+        return jsonify([]), 500
     finally:
         if cursor:
             cursor.close()
         if conn:
             conn.close()
 
-# ✅ API to get one employee + attendance
 @app.route('/api/employee/<userid>')
 def api_employee(userid):
     try:
